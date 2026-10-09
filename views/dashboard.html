@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#061321">
+    <title>XAI-CyberShield | Threat dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="#dashboard" aria-label="XAI-CyberShield dashboard">
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 40 44"><path d="M20 2 36 8v12c0 10-6.7 17.3-16 22C10.7 37.3 4 30 4 20V8L20 2Z"/><path d="m13 21 5 5 10-11"/></svg>
+                </span>
+                <span><strong>XAI-CyberShield</strong><small>Explainable AI for Cyber Threat Detection</small></span>
+            </a>
+            <label class="global-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+                <input id="global-search" type="search" placeholder="Search IP, domain, or event..." autocomplete="off" aria-label="Search threats">
+                <kbd>/</kbd>
+            </label>
+            <div class="top-actions">
+                <div class="date-chip"><span aria-hidden="true">▦</span><span id="current-date"></span></div>
+                <div class="profile-wrap">
+                    <button class="profile-button" id="profile-button" type="button" aria-expanded="false">
+                        <span class="avatar">A</span><span>Admin</span><span class="chevron">⌄</span>
+                    </button>
+                    <div class="profile-menu hidden" id="profile-menu">
+                        <strong>Administrator</strong>
+                        <span class="muted">Security operations</span>
+                        <button type="button" data-view="settings">Preferences</button>
+                        <button type="button" id="about-button">About this dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="layout">
+            <aside class="sidebar" aria-label="Main navigation">
+                <nav id="main-nav">
+                    <button class="nav-item active" type="button" data-view="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+                    <button class="nav-item" type="button" data-view="live"><span class="nav-icon">⬡</span>Live Monitoring<span class="live-dot"></span></button>
+                    <button class="nav-item" type="button" data-view="analysis"><span class="nav-icon">▲</span>Threat Analysis</button>
+                    <button class="nav-item" type="button" data-view="risk"><span class="nav-icon">♢</span>Risk Classification</button>
+                    <button class="nav-item" type="button" data-view="explanations"><span class="nav-icon">✧</span>AI Explanations</button>
+                    <button class="nav-item" type="button" data-view="reports"><span class="nav-icon">▤</span>Reports</button>
+                    <button class="nav-item" type="button" data-view="datasets"><span class="nav-icon">▦</span>Datasets</button>
+                    <button class="nav-item" type="button" data-view="settings"><span class="nav-icon">⚙</span>Settings</button>
+                </nav>
+                <div class="sidebar-status"><span class="status-pulse"></span><span><strong>Detection active</strong><small>All systems operational</small></span></div>
+            </aside>
+
+            <main class="main-content">
+                <div class="view-heading">
+                    <div><p class="eyebrow">SECURITY OPERATIONS CENTER</p><h1 id="page-title">Dashboard</h1></div>
+                    <div class="heading-actions"><span class="updated-label"><span class="status-pulse"></span> Updated just now</span><button class="icon-button" id="refresh-button" type="button" aria-label="Refresh dashboard" title="Refresh dashboard">⟳</button></div>
+                </div>
+
+                <section class="dashboard-view" id="dashboard-view">
+                    <div class="metric-grid">
+                        <article class="metric-card metric-total"><div class="metric-top"><span>Total threats detected</span><span class="metric-icon red">!</span></div><strong id="total-count">1,248</strong><div class="metric-foot"><span class="trend up">↑ 12%</span><span>vs last 24 hours</span></div></article>
+                        <article class="metric-card metric-high"><div class="metric-top"><span>High risk</span><span class="metric-icon amber">▲</span></div><strong id="high-count">186</strong><div class="metric-foot"><span class="trend up">↑ 8%</span><span>vs last 24 hours</span></div></article>
+                        <article class="metric-card metric-medium"><div class="metric-top"><span>Medium risk</span><span class="metric-icon blue">♢</span></div><strong id="medium-count">423</strong><div class="metric-foot"><span class="trend up">↑ 15%</span><span>vs last 24 hours</span></div></article>
+                        <article class="metric-card metric-low"><div class="metric-top"><span>Low risk</span><span class="metric-icon green">✓</span></div><strong id="low-count">639</strong><div class="metric-foot"><span class="trend down">↓ 5%</span><span>vs last 24 hours</span></div></article>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <section class="panel trend-panel">
+                            <div class="panel-heading"><h2>Threat Trend <span>(Last 24 Hours)</span></h2><div class="legend"><span><i class="legend-red"></i>High Risk</span><span><i class="legend-amber"></i>Medium Risk</span><span><i class="legend-blue"></i>Low Risk</span></div></div>
+                            <div class="chart-wrap"><canvas id="trend-chart" aria-label="Threat trend over the last 24 hours" role="img"></canvas></div>
+                        </section>
+                        <section class="panel type-panel">
+                            <div class="panel-heading"><h2>Threats by Type</h2><button class="text-button" type="button" data-view="analysis">Details <span>→</span></button></div>
+                            <div class="type-content"><div class="donut-wrap"><div class="donut"><div><strong>1,248</strong><span>Total</span></div></div></div><ul class="type-legend">
+                                <li><i class="type-red"></i><span>Malware</span><strong>32%</strong></li><li><i class="type-amber"></i><span>Phishing</span><strong>22%</strong></li><li><i class="type-blue"></i><span>DDoS</span><strong>15%</strong></li><li><i class="type-purple"></i><span>Brute Force</span><strong>12%</strong></li><li><i class="type-green"></i><span>Web Attack</span><strong>10%</strong></li><li><i class="type-slate"></i><span>Others</span><strong>9%</strong></li>
+                            </ul></div>
+                        </section>
+                    </div>
+
+                    <div class="lower-grid">
+                        <section class="panel threats-panel">
+                            <div class="panel-heading"><h2>Real-Time Detected Threats <span class="result-count" id="result-count"></span></h2><div class="table-actions"><select id="risk-filter" aria-label="Filter threats by risk"><option value="all">All risk levels</option><option value="High">High risk</option><option value="Medium">Medium risk</option><option value="Low">Low risk</option></select><button class="small-button" type="button" data-view="analysis">View All</button></div></div>
+                            <div class="table-scroll"><table><thead><tr><th>Time</th><th>Source IP</th><th>Threat Type</th><th>Risk Level</th><th>Prediction</th><th>Confidence</th><th>Action</th></tr></thead><tbody id="threat-rows"></tbody></table></div>
+                            <div class="empty-state hidden" id="empty-state">No threats match your search and filters.</div>
+                        </section>
+                        <div class="right-stack">
+                            <section class="panel map-panel"><div class="panel-heading"><h2>Geographic Source of Threats</h2><button class="text-button" type="button" data-view="analysis">Explore <span>→</span></button></div>
+                                <div class="map-area" aria-label="Illustrative map of threat sources">
+                                    <svg viewBox="0 0 600 260" role="img" aria-label="World map with threat source locations">
+                                        <g class="continents">
+                                            <path d="m35 58 23-19 36-6 19 12 27-3 15 14-11 15-25 3-10 17-19 8-5 24-16 9-7-15-20-3-9-22-18-12zM100 143l27 7 18 15 4 28-15 19-7 35-13-12-8-31-14-14 2-24-13-11zM250 52l18-15 23 4 10 14-10 12-15-2-8 17-14-7zM284 91l28-14 27 8 10 22-7 19-18 11-4 28-18 22-13-19-4-26-17-13-3-20zM323 50l42-21 55 5 30 17 48 2 33 19-6 18-34 7-13 19-24 6-22 21-20-5-8-21-28-2-16-17-21 4-23-14-4-21-21-4zM463 142l23-8 18 12 9 29-13 21-18-11-13-23zM488 213l22 4 9 13-28 3-18-10z"/>
+                                            <path d="m183 34 7-12 13 4 3 15-9 8zM548 113l13 5 5 18-9 10-13-16z"/>
+                                        </g>
+                                        <g class="map-lines"><path d="M40 128Q175 50 270 128T560 100M100 192Q280 94 440 180T550 130"/></g>
+                                        <g class="map-points"><circle class="point high" cx="166" cy="105" r="5"/><circle class="point high" cx="333" cy="93" r="6"/><circle class="point high" cx="447" cy="83" r="5"/><circle class="point medium" cx="212" cy="155" r="5"/><circle class="point medium" cx="380" cy="164" r="4"/><circle class="point low" cx="370" cy="115" r="4"/><circle class="point low" cx="470" cy="137" r="4"/><circle class="point low" cx="305" cy="189" r="4"/></g>
+                                    </svg>
+                                    <div class="map-legend"><span><i class="type-red"></i>High</span><span><i class="type-amber"></i>Medium</span><span><i class="type-green"></i>Low</span></div>
+                                    <div class="map-zoom"><button type="button" id="zoom-in" aria-label="Zoom in">+</button><button type="button" id="zoom-out" aria-label="Zoom out">−</button></div>
+                                </div>
+                            </section>
+                            <section class="panel risk-chart-panel"><div class="panel-heading"><h2>Risk Distribution Over Time</h2><div class="legend compact"><span><i class="legend-red"></i>High</span><span><i class="legend-amber"></i>Medium</span><span><i class="legend-blue"></i>Low</span></div></div><div class="chart-wrap bar-chart-wrap"><canvas id="risk-chart" aria-label="Risk distribution over time" role="img"></canvas></div></section>
+                        </div>
+                        <section class="panel explanation-panel"><div class="panel-heading"><h2><span class="sparkle">✧</span> AI Explanation</h2><button class="text-button" type="button" data-view="explanations">View explanation <span>→</span></button></div>
+                            <div class="explanation-content"><dl><div><dt>Threat Type:</dt><dd id="explain-type">Phishing</dd></div><div><dt>Risk Level:</dt><dd class="risk-text-high" id="explain-risk">High</dd></div><div><dt>Confidence:</dt><dd id="explain-confidence">97.1%</dd></div><div><dt>Source IP:</dt><dd id="explain-ip">103.21.44.77</dd></div></dl><div class="reason-box"><strong id="reason-title">Why is this classified as a threat?</strong><ul id="reason-list"><li>URL contains suspicious domain patterns</li><li>Similar to known phishing URLs in training data</li><li>Uses URL shortener and obfuscated characters</li><li>High similarity with phishing behavior</li></ul></div></div>
+                        </section>
+                    </div>
+                    <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+                </section>
+                <section class="secondary-view hidden" id="secondary-view"></section>
+            </main>
+        </div>
+    </div>
+    <input class="hidden" type="file" id="dataset-file" accept=".csv,.json,.txt">
+    <script src="/script.js"></script>
+</body>
+</html>
